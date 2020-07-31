@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
+import 'character.dart';
+import 'character_card.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -13,8 +14,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int age = 0;
-  List<int> ageList = [11,14,21,45];
+  List<Character> characters = [
+    Character(name: 'Jacob', age: 21, description: 'this is a description'),
+    Character(name: 'Bob', age: 44, description: 'hello'),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -57,79 +60,10 @@ class _HomeState extends State<Home> {
                           )),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Name',
-                            style: TextStyle(
-                              fontSize: 16,
-                              letterSpacing: 4,
-                              color: Colors.grey[600],
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            'Jacob',
-                            style: TextStyle(
-                              fontSize: 25,
-                              color: Colors.amber[200],
-                            ),
-                          ),
-                          SizedBox(height: 30),
-                          Text(
-                            'Age',
-                            style: TextStyle(
-                              fontSize: 16,
-                              letterSpacing: 4,
-                              color: Colors.grey[600],
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            '$age',
-                            style: TextStyle(
-                              fontSize: 25,
-                              color: Colors.amber[200],
-                            ),
-                          ),
-                          SizedBox(height: 30),
-                          Text(
-                            'Description',
-                            style: TextStyle(
-                              fontSize: 16,
-                              letterSpacing: 4,
-                              color: Colors.grey[600],
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            '..........',
-                            style: TextStyle(
-                              fontSize: 25,
-                              color: Colors.amber[200],
-                            ),
-                          ),
-                          FloatingActionButton(
-                            onPressed: () {
-                              setState(() {
-                                var rng = new Random();
-                                age = ageList[rng.nextInt(ageList.length)];
-                              });
-                            },
-                            child: Icon(
-                              Icons.add,
-                            ),
-                          ),
-                          FloatingActionButton(
-                            onPressed: () {
-                              setState(() {
-                                age = 0;
-                              });
-                            },
-                            child: Icon(
-                              Icons.clear,
-                            ),
-                          )
-                        ],
+                        children: characters
+                            .map((character) =>
+                                CharacterCard(character: character))
+                            .toList(),
                       ),
                     ),
                   ),
@@ -152,3 +86,4 @@ class _HomeState extends State<Home> {
         ));
   }
 }
+
