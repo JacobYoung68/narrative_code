@@ -163,11 +163,13 @@ class _HomeState extends State<Home> {
                                             if (_formKey.currentState
                                                 .validate()) {
                                               _formKey.currentState.save();
-                                              characters.add(Character(
-                                                  name: '$_name',
-                                                  age: int.parse('$_age'),
-                                                  description:
-                                                      '$_description'));
+                                              setState(() {
+                                                characters.add(Character(
+                                                    name: '$_name',
+                                                    age: int.parse('$_age'),
+                                                    description:
+                                                        '$_description'));
+                                              });
                                               print(characters[2].name);
                                             }
                                           },
