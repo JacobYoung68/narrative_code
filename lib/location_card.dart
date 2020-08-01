@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'character.dart';
+import 'location.dart';
 
-class CharacterCard extends StatelessWidget {
-  final Character character;
+class LocationCard extends StatelessWidget {
+  final Location location;
   final Function delete;
 
-  CharacterCard({this.character, this.delete});
+  LocationCard({this.location, this.delete});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class CharacterCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text(
-              character.name,
+              location.name,
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.grey,
@@ -27,15 +27,7 @@ class CharacterCard extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             Text(
-              character.age.toString(),
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.grey,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            Text(
-              character.description,
+              location.description,
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.grey,
