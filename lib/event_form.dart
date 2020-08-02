@@ -1,7 +1,9 @@
-import 'package:flutter/cupertino.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'location.dart';
 import 'character.dart';
+import 'package:intl/intl.dart';
 import 'event.dart';
 
 class EventForm extends StatefulWidget {
@@ -38,15 +40,27 @@ class _EventFormState extends State<EventForm> {
     );
   }
 
+
+  final format = DateFormat("yyyy-MM-dd");
   Widget _buildDate() {
     return Container(
       height: 100,
-      child: CupertinoDatePicker(
-        onDateTimeChanged: (value) {
-          setState(() {
-            _date = value.toUtc();
-          });
-        },
+      child: Column(
+        children: [
+          Text('Basic date field (${format.pattern})'),
+          DateTimeField(  format: format,
+            onShowPicker: (context, currentValue) {
+              return showDatePicker(
+                  context: context,
+                  firstDate: DateTime(1900),
+                  initialDate: currentValue ?? DateTime.now(),
+                  lastDate: DateTime(2100));
+            },
+            onSaved: (value){
+            _date = value;
+            },
+          ),
+        ],
       ),
     );
   }
