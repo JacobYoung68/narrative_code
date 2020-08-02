@@ -37,8 +37,11 @@ class _HomeState extends State<Home> {
         name: 'Birthday',
         date: DateTime.now(),
         description: 'hello',
-        location: Location(name: 'Locaiton name test' ,description: 'test'),
-        ),
+        location: Location(name: 'Locaiton name test', description: 'test'),
+        charactersInvolved: [
+          /*Character(name: 'Jacob', age: 21, description: 'description'),
+          Character(name: 'Bob', age: 44, description: 'hello')*/
+        ]),
   ];
 
   bool charactersIsVisible = true;
@@ -192,8 +195,11 @@ class _HomeState extends State<Home> {
                             child: Row(
                               children: [
                                 EventForm(
-                                  event: events,
-                                  notifyParent: refresh,),
+                                  events: events,
+                                  characters: characters,
+                                  locations: locations,
+                                  notifyParent: refresh,
+                                ),
                                 Container(
                                   child: Expanded(
                                     child: GridView.count(

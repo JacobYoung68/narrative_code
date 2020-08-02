@@ -7,23 +7,29 @@ import 'package:intl/intl.dart';
 import 'event.dart';
 
 class EventForm extends StatefulWidget {
-  final event;
+  final events;
+  final characters;
+  final locations;
   final Function notifyParent;
 
-  EventForm({this.event, this.notifyParent});
+  EventForm({this.events, this.characters, this.locations, this.notifyParent});
 
   @override
-  _EventFormState createState() => _EventFormState();
+  _EventFormState createState() => _EventFormState(characters: characters);
 }
 
 class _EventFormState extends State<EventForm> {
   final _formKey = GlobalKey<FormState>();
 
+  List<Character> characters;
+
+  _EventFormState({this.characters});
+
   String _name;
   DateTime _date;
   Location _location;
   String _description;
-  List<Character> _charactersInvolved;
+  List<Character> _charactersInvolved = [];
 
   Widget _buildName() {
     return TextFormField(
@@ -40,15 +46,16 @@ class _EventFormState extends State<EventForm> {
     );
   }
 
-
   final format = DateFormat("yyyy-MM-dd");
+
   Widget _buildDate() {
     return Container(
       height: 100,
       child: Column(
         children: [
           Text('Basic date field (${format.pattern})'),
-          DateTimeField(  format: format,
+          DateTimeField(
+            format: format,
             onShowPicker: (context, currentValue) {
               return showDatePicker(
                   context: context,
@@ -56,8 +63,8 @@ class _EventFormState extends State<EventForm> {
                   initialDate: currentValue ?? DateTime.now(),
                   lastDate: DateTime(2100));
             },
-            onSaved: (value){
-            _date = value;
+            onSaved: (value) {
+              _date = value;
             },
           ),
         ],
@@ -65,18 +72,12 @@ class _EventFormState extends State<EventForm> {
     );
   }
 
-  List<Location> testLocations = [
-    Location(name: 'Hogwarts', description: 'here is a great description'),
-    Location(name: 'Neverland', description: 'here is a great description'),
-    Location(name: 'Stormwind', description: 'here is a great description')
-  ];
-
   String dropDownValue = 'Location';
 
   Widget _buildLocation() {
     return DropdownButton(
         hint: Text(dropDownValue),
-        items: testLocations.map<DropdownMenuItem<String>>((value) {
+        items: widget.locations.map<DropdownMenuItem<String>>((value) {
           return DropdownMenuItem<String>(
             value: value.name,
             child: Text(value.name),
@@ -92,9 +93,9 @@ class _EventFormState extends State<EventForm> {
         ),
         onChanged: (value) {
           setState(() {
-            for (int i = 0; i < testLocations.length; i++) {
-              if (testLocations[i].name == value) {
-                _location = testLocations[i];
+            for (int i = 0; i < widget.locations.length; i++) {
+              if (widget.locations[i].name == value) {
+                _location = widget.locations[i];
                 dropDownValue = value;
               }
             }
@@ -117,38 +118,32 @@ class _EventFormState extends State<EventForm> {
     );
   }
 
-  List<Character> testList = [
-    Character(name: 'Roger', age: 10, description: 'nice description'),
-    Character(name: 'Ben', age: 32, description: 'other description'),
-    Character(name: 'Del', age: 51, description: 'bad description too'),
-  ];
-
-  List<bool> checked = [true, false, false]; //hardcoded the checkbox values
+  var checked = new List<bool>.filled(19, false, growable: true);
 
   Widget _buildCharacterList() {
-    return Column(
-      children: testList
-          .map((character) => CheckboxListTile(
-                value: checked[testList.indexOf(character)],
-                title: Text(character.name),
-                onChanged: (value) {
-                  setState(() {
-                    value = !value;
-                    for (int i = 0; i < testList.length; i++) {
-                      if (testList[i].name == character.name) {
-                        _charactersInvolved.add(testList[i]);
-                      }
-                    }
-                  });
-                },
-              ))
-          .toList(),
+    return Container(
+      height: 150,
+      child: ListView.builder(
+        itemCount: characters.length,
+        itemBuilder: (context, i) {
+          return CheckboxListTile(
+            value: checked[i],
+            title: Text(characters[i].name),
+            onChanged: (bool value){
+              setState(() {
+                checked[i] =! checked[i];
+                _charactersInvolved.add(characters[i]);
+              });
+            },
+          );
+        },
+      ),
     );
   }
 
   void saveNewEvent() {
     setState(() {
-      widget.event.add(Event(
+      widget.events.add(Event(
           name: _name,
           date: DateTime.parse('$_date'),
           location: _location,
