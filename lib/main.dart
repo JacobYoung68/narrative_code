@@ -6,6 +6,9 @@ import 'location_card.dart';
 import 'left_menu.dart';
 import 'character_form.dart';
 import 'location_form.dart';
+import 'event.dart';
+import 'event_card.dart';
+import 'event_form.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -27,6 +30,15 @@ class _HomeState extends State<Home> {
   List<Location> locations = [
     Location(name: 'Manchester', description: 'this is a description'),
     Location(name: 'Holmes Chapel', description: 'this is another description'),
+  ];
+
+  List<Event> events = [
+    Event(
+        name: 'Birthday',
+        date: DateTime.now(),
+        description: 'hello',
+        location: Location(name: 'Locaiton name test' ,description: 'test'),
+        ),
   ];
 
   bool charactersIsVisible = true;
@@ -152,11 +164,11 @@ class _HomeState extends State<Home> {
                                     child: GridView.count(
                                       crossAxisCount: 2,
                                       children: locations
-                                          .map((locations) => LocationCard(
-                                              location: locations,
+                                          .map((location) => LocationCard(
+                                              location: location,
                                               delete: () {
                                                 setState(() {
-                                                  characters.remove(locations);
+                                                  characters.remove(location);
                                                 });
                                               }))
                                           .toList(),
@@ -179,20 +191,17 @@ class _HomeState extends State<Home> {
                                 )),
                             child: Row(
                               children: [
-                                LocationForm(
-                                  locations: locations,
-                                  notifyParent: refresh,
-                                ),
+                                EventForm(),
                                 Container(
                                   child: Expanded(
                                     child: GridView.count(
                                       crossAxisCount: 2,
-                                      children: locations
-                                          .map((locations) => LocationCard(
-                                              location: locations,
+                                      children: events
+                                          .map((event) => EventCard(
+                                              event: event,
                                               delete: () {
                                                 setState(() {
-                                                  characters.remove(locations);
+                                                  characters.remove(event);
                                                 });
                                               }))
                                           .toList(),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'character.dart';
 
 class CharacterForm extends StatefulWidget {
@@ -17,9 +16,7 @@ class _CharacterFormState extends State<CharacterForm> {
   final _formKey = GlobalKey<FormState>();
 
   String _name;
-
   int _age;
-
   String _description;
 
   Widget _buildName() {
