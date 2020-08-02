@@ -30,15 +30,22 @@ class _HomeState extends State<Home> {
 
   bool charactersIsVisible = true;
   bool locationsIsVisible = false;
+  bool eventsIsVisible = false;
 
   void toggleVisible(x) {
     setState(() {
       if (x == 'Characters') {
         charactersIsVisible = true;
         locationsIsVisible = false;
+        eventsIsVisible = false;
       } else if (x == 'Locations') {
         locationsIsVisible = true;
         charactersIsVisible = false;
+        eventsIsVisible = false;
+      } else if (x == 'Events') {
+        locationsIsVisible = false;
+        charactersIsVisible = false;
+        eventsIsVisible = true;
       }
     });
   }
@@ -102,7 +109,12 @@ class _HomeState extends State<Home> {
     return Scaffold(
         backgroundColor: Colors.grey[800],
         appBar: AppBar(
-          title: Text('Narrative.Code'),
+          title: Text(
+            'Narrative.Code',
+            style: TextStyle(
+              fontSize: 30,
+            ),
+          ),
           backgroundColor: Colors.grey[900],
         ),
         body: Column(
@@ -179,17 +191,19 @@ class _HomeState extends State<Home> {
                                     ),
                                   ),
                                 )),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: characters
-                                      .map((character) => CharacterCard(
-                                          character: character,
-                                          delete: () {
-                                            setState(() {
-                                              characters.remove(character);
-                                            });
-                                          }))
-                                      .toList(),
+                                Expanded(
+                                  child: GridView.count(
+                                    crossAxisCount: 2,
+                                    children: characters
+                                        .map((character) => CharacterCard(
+                                            character: character,
+                                            delete: () {
+                                              setState(() {
+                                                characters.remove(character);
+                                              });
+                                            }))
+                                        .toList(),
+                                  ),
                                 ),
                               ],
                             ),
@@ -234,7 +248,10 @@ class _HomeState extends State<Home> {
                       width: 10,
                       color: Colors.orange,
                     )),
-                child: Text('Hello'),
+                child: Text(
+                  'WIP / Timeline',
+                  style: TextStyle(fontSize: 30),
+                ),
               ),
             ),
           ],
