@@ -191,7 +191,9 @@ class _HomeState extends State<Home> {
                                 )),
                             child: Row(
                               children: [
-                                EventForm(),
+                                EventForm(
+                                  event: events,
+                                  notifyParent: refresh,),
                                 Container(
                                   child: Expanded(
                                     child: GridView.count(

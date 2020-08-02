@@ -1,4 +1,4 @@
-import 'package:date_field/date_field.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'location.dart';
 import 'character.dart';
@@ -6,7 +6,7 @@ import 'event.dart';
 
 class EventForm extends StatefulWidget {
   final event;
-  final Function() notifyParent;
+  final Function notifyParent;
 
   EventForm({this.event, this.notifyParent});
 
@@ -39,13 +39,15 @@ class _EventFormState extends State<EventForm> {
   }
 
   Widget _buildDate() {
-    return DateField(
-      onDateSelected: (value) {
-        setState(() {
-          _date = value.toUtc();
-        });
-      },
-      selectedDate: _date,
+    return Container(
+      height: 100,
+      child: CupertinoDatePicker(
+        onDateTimeChanged: (value) {
+          setState(() {
+            _date = value.toUtc();
+          });
+        },
+      ),
     );
   }
 
@@ -107,12 +109,13 @@ class _EventFormState extends State<EventForm> {
     Character(name: 'Del', age: 51, description: 'bad description too'),
   ];
 
-
+  List<bool> checked = [true, false, false]; //hardcoded the checkbox values
 
   Widget _buildCharacterList() {
     return Column(
       children: testList
           .map((character) => CheckboxListTile(
+                value: checked[testList.indexOf(character)],
                 title: Text(character.name),
                 onChanged: (value) {
                   setState(() {
@@ -129,6 +132,18 @@ class _EventFormState extends State<EventForm> {
     );
   }
 
+  void saveNewEvent() {
+    setState(() {
+      widget.event.add(Event(
+          name: _name,
+          date: DateTime.parse('$_date'),
+          location: _location,
+          description: _description,
+          charactersInvolved: _charactersInvolved));
+    });
+    print('Name: $_name');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -137,7 +152,7 @@ class _EventFormState extends State<EventForm> {
         width: 500,
         padding: EdgeInsets.all(30),
         color: Colors.grey,
-        child: Column(
+        child: ListView(
           children: [
             Text('Create New Character'),
             SizedBox(
@@ -159,20 +174,17 @@ class _EventFormState extends State<EventForm> {
             SizedBox(
               height: 20,
             ),
+            Text('Select Present Characters'),
+            SizedBox(
+              height: 20,
+            ),
             _buildCharacterList(),
             FlatButton(
               color: Colors.red,
               onPressed: () {
                 if (_formKey.currentState.validate()) {
                   _formKey.currentState.save();
-                  setState(() {
-                    widget.event.add(Event(
-                        name: _name,
-                        date: DateTime.parse('$_date'),
-                        location: _location,
-                        description: _description,
-                        charactersInvolved: _charactersInvolved));
-                  });
+                  saveNewEvent();
                 }
                 widget.notifyParent();
               },
