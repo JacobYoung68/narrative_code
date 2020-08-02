@@ -5,6 +5,7 @@ import 'character_card.dart';
 import 'location_card.dart';
 import 'left_menu.dart';
 import 'character_form.dart';
+import 'location_form.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -140,17 +141,65 @@ class _HomeState extends State<Home> {
                                   width: 10,
                                   color: Colors.blue,
                                 )),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: locations
-                                  .map((location) => LocationCard(
-                                      location: location,
-                                      delete: () {
-                                        setState(() {
-                                          locations.remove(location);
-                                        });
-                                      }))
-                                  .toList(),
+                            child: Row(
+                              children: [
+                                LocationForm(
+                                  locations: locations,
+                                  notifyParent: refresh,
+                                ),
+                                Container(
+                                  child: Expanded(
+                                    child: GridView.count(
+                                      crossAxisCount: 2,
+                                      children: locations
+                                          .map((locations) => LocationCard(
+                                              location: locations,
+                                              delete: () {
+                                                setState(() {
+                                                  characters.remove(locations);
+                                                });
+                                              }))
+                                          .toList(),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Visibility(
+                          visible: eventsIsVisible,
+                          child: Container(
+                            padding: EdgeInsets.all(20.0),
+                            decoration: BoxDecoration(
+                                color: Colors.grey[800],
+                                border: Border.all(
+                                  width: 10,
+                                  color: Colors.blue,
+                                )),
+                            child: Row(
+                              children: [
+                                LocationForm(
+                                  locations: locations,
+                                  notifyParent: refresh,
+                                ),
+                                Container(
+                                  child: Expanded(
+                                    child: GridView.count(
+                                      crossAxisCount: 2,
+                                      children: locations
+                                          .map((locations) => LocationCard(
+                                              location: locations,
+                                              delete: () {
+                                                setState(() {
+                                                  characters.remove(locations);
+                                                });
+                                              }))
+                                          .toList(),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
