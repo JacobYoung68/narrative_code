@@ -119,7 +119,9 @@ class _EventFormState extends State<EventForm> {
   }
 
   var checked = new List<bool>.filled(19, false, growable: true);
+  bool changed;
 
+  //ToDo characters are added to all new events, doesnt make any sense
   Widget _buildCharacterList() {
     return Container(
       height: 150,
@@ -129,10 +131,24 @@ class _EventFormState extends State<EventForm> {
           return CheckboxListTile(
             value: checked[i],
             title: Text(characters[i].name),
-            onChanged: (bool value){
+            onChanged: (bool value) {
               setState(() {
-                checked[i] =! checked[i];
-                _charactersInvolved.add(characters[i]);
+                checked[i] = !checked[i];
+                changed = false;
+                if (_charactersInvolved.isNotEmpty) {
+                  for (int i = 0; i < _charactersInvolved.length; i++) {
+                    if (_charactersInvolved[i] == characters[i]) {
+                      _charactersInvolved.remove(i);
+                      changed = true;
+                    }
+                  }
+                  if (changed == false) {
+                    _charactersInvolved.add(characters[i]);
+                  }
+                  changed = false;
+                } else {
+                  _charactersInvolved.add(characters[i]);
+                }
               });
             },
           );
@@ -143,14 +159,24 @@ class _EventFormState extends State<EventForm> {
 
   void saveNewEvent() {
     setState(() {
-      widget.events.add(Event(
-          name: _name,
-          date: DateTime.parse('$_date'),
-          location: _location,
-          description: _description,
-          charactersInvolved: _charactersInvolved));
+      if (_name != null &&
+          _date != null &&
+          _location != null &&
+          _description != null &&
+          _charactersInvolved != null) {
+        widget.events.add(Event(
+            name: _name,
+            date: DateTime.parse('$_date'),
+            location: _location,
+            description: _description,
+            charactersInvolved: _charactersInvolved));
+        _formKey.currentState.reset();
+        _name = null;
+        _date = null;
+        _description = null;
+        _charactersInvolved.clear();
+      }
     });
-    print('Name: $_name');
   }
 
   @override
@@ -163,7 +189,7 @@ class _EventFormState extends State<EventForm> {
         color: Colors.grey,
         child: ListView(
           children: [
-            Text('Create New Character'),
+            Text('Create New Event'),
             SizedBox(
               height: 20,
             ),
