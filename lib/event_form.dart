@@ -138,8 +138,9 @@ class _EventFormState extends State<EventForm> {
                 changed = false;
                 if (_charactersInvolved.isNotEmpty) {
                   for (int n = 0; n < _charactersInvolved.length; n++) {
-                    if (_charactersInvolved[n] == characters[i]) {
-                      _charactersInvolved.remove(n);
+                    if (_charactersInvolved[n].name == characters[i].name) {
+                      print(_charactersInvolved[n].name);
+                      _charactersInvolved.removeAt(n);
                       changed = true;
                     }
                   }
@@ -179,6 +180,11 @@ class _EventFormState extends State<EventForm> {
         _date = null;
         _description = null;
         _charactersInvolved = [];
+      } else {
+        for (int i = 0; i < checked.length; i++) {
+          checked[i] = false;
+        }
+        _charactersInvolved = [];
       }
     });
   }
@@ -191,46 +197,49 @@ class _EventFormState extends State<EventForm> {
         width: 500,
         padding: EdgeInsets.all(30),
         color: Colors.grey,
-        child: ListView(
-          children: [
-            Text('Create New Event'),
-            SizedBox(
-              height: 20,
-            ),
-            _buildName(),
-            SizedBox(
-              height: 20,
-            ),
-            _buildLocation(),
-            SizedBox(
-              height: 20,
-            ),
-            _buildDate(),
-            SizedBox(
-              height: 20,
-            ),
-            _buildDescription(),
-            SizedBox(
-              height: 20,
-            ),
-            Text('Select Present Characters'),
-            SizedBox(
-              height: 20,
-            ),
-            _buildCharacterList(),
-            FlatButton(
-              color: Colors.red,
-              onPressed: () {
-                if (_formKey.currentState.validate()) {
-                  _formKey.currentState.save();
-                  saveNewEvent();
-                }
-                widget.notifyParent();
-              },
-              child: Text('Submit'),
-            ),
-          ],
-        ),
+        child: ListView(children: [
+          Text('Create New Event'),
+          SizedBox(
+            height: 20,
+          ),
+          _buildName(),
+          SizedBox(
+            height: 20,
+          ),
+          _buildLocation(),
+          SizedBox(
+            height: 20,
+          ),
+          _buildDate(),
+          SizedBox(
+            height: 20,
+          ),
+          _buildDescription(),
+          SizedBox(
+            height: 20,
+          ),
+          Text('Select Present Characters'),
+          SizedBox(
+            height: 20,
+          ),
+          _buildCharacterList(),
+          FlatButton(
+            color: Colors.red,
+            onPressed: () {
+              if (_formKey.currentState.validate()) {
+                _formKey.currentState.save();
+                saveNewEvent();
+              }
+              widget.notifyParent();
+            },
+            child: Text('Submit'),
+          ),
+          Column(
+            children: _charactersInvolved
+                .map((character) => new Text(character.name))
+                .toList(),
+          ),
+        ]),
       ),
     );
   }
