@@ -118,10 +118,11 @@ class _EventFormState extends State<EventForm> {
     );
   }
 
+  // ToDo change this so it is dynamic and not just hardcoded to 19
   var checked = new List<bool>.filled(19, false, growable: true);
+
   bool changed;
 
-  //ToDo characters are added to all new events, doesnt make any sense
   Widget _buildCharacterList() {
     return Container(
       height: 150,
@@ -136,9 +137,9 @@ class _EventFormState extends State<EventForm> {
                 checked[i] = !checked[i];
                 changed = false;
                 if (_charactersInvolved.isNotEmpty) {
-                  for (int i = 0; i < _charactersInvolved.length; i++) {
-                    if (_charactersInvolved[i] == characters[i]) {
-                      _charactersInvolved.remove(i);
+                  for (int n = 0; n < _charactersInvolved.length; n++) {
+                    if (_charactersInvolved[n] == characters[i]) {
+                      _charactersInvolved.remove(n);
                       changed = true;
                     }
                   }
@@ -171,10 +172,13 @@ class _EventFormState extends State<EventForm> {
             description: _description,
             charactersInvolved: _charactersInvolved));
         _formKey.currentState.reset();
+        for (int i = 0; i < checked.length; i++) {
+          checked[i] = false;
+        }
         _name = null;
         _date = null;
         _description = null;
-        _charactersInvolved.clear();
+        _charactersInvolved = [];
       }
     });
   }
