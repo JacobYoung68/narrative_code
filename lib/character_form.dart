@@ -92,6 +92,7 @@ class _CharacterFormState extends State<CharacterForm> {
                         name: '$_name',
                         age: int.parse('$_age'),
                         description: '$_description'));
+                    _formKey.currentState.reset();
                   });
                 }
                 widget.notifyParent();

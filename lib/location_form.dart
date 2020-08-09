@@ -70,6 +70,7 @@ class _LocationFormState extends State<LocationForm> {
                     widget.locations.add(Location(
                         name: '$_name',
                         description: '$_description'));
+                    _formKey.currentState.reset();
                   });
                 }
                 widget.notifyParent();
