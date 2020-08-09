@@ -171,7 +171,7 @@ class _HomeState extends State<Home> {
                                               location: location,
                                               delete: () {
                                                 setState(() {
-                                                  characters.remove(location);
+                                                  locations.remove(location);
                                                 });
                                               }))
                                           .toList(),
@@ -209,7 +209,7 @@ class _HomeState extends State<Home> {
                                               event: event,
                                               delete: () {
                                                 setState(() {
-                                                  characters.remove(event);
+                                                  events.remove(event);
                                                 });
                                               }))
                                           .toList(),

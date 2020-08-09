@@ -234,11 +234,12 @@ class _EventFormState extends State<EventForm> {
             },
             child: Text('Submit'),
           ),
-          Column(
+          // column to test out the charactersinvolved list visually
+          /*Column(
             children: _charactersInvolved
                 .map((character) => new Text(character.name))
                 .toList(),
-          ),
+          ),*/
         ]),
       ),
     );
